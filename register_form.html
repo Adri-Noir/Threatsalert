@@ -1,0 +1,152 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" integrity="sha384-OHBBOqpYHNsIqQy8hL1U+8OXf9hH6QRxi0+EODezv82DfnZoV7qoHAZDwMwEJvSw" crossorigin="anonymous">
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login_form.css') }}">
+
+
+</head>
+<script type="text/javascript">
+	function displaynotification(msg, type, delay) {
+		$.notify({
+			// options
+			message: msg,
+		},{
+			animate: {
+				enter: 'animated bounceIn',
+				exit: 'animated bounceOutUp'
+			},
+			type: type,
+			delay: delay,
+			newest_on_top: true,
+			allow_dismiss: false,
+			spacing: 10,
+			template: '<div data-notify="container" class="alert alert-{0}" role="alert">' +
+							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">&times</button>' +
+							'<span data-notify="icon"></span> ' +
+							'<span data-notify="title">{1}</span> ' +
+							'<span data-notify="message">{2}</span>' +
+							'<div class="progress" data-notify="progressbar">' +
+								'<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+							'</div>' +
+							'<a href="{3}" target="{4}" data-notify="url"></a>' +
+						'</div>' 
+		});
+	};
+</script>
+
+<body>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+		<script type="text/javascript">
+			displaynotification('{{ message }}', '{{ category }}', 100)
+		</script>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<div class="wrapper">
+	<form class="login" method="POST" action="/register">
+		
+		<p class="title">Create new user</p>
+		<input type="text" placeholder="Username " name="username" id="username" autofocus/>
+		<i class="fa fa-address-card"></i>
+		<input type="text" placeholder="Email " name="email" id="email"/>
+		<i class="fa fa-user"></i>
+		<input type="password" placeholder="Password" name="password" id="password"/>
+		<i class="fa fa-key"></i>
+		<p id="password-strength-text"></p>
+		<input type="password" placeholder="Confirm Password" name="confirm_password" id="confirm_password"/>
+		<i class="fa fa-key"></i>
+		<a href="/recover_password">Forgot your password?</a>
+		&nbsp;
+		<a href="/login">Login</a>
+		<button type="submit"><span class="state">Register</span></button>
+
+  </form>
+  </p>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
+<script type="text/javascript">
+	var password = document.getElementById("password"), confirm_password = document.getElementById("confirm_password");
+
+	function validatePassword(){
+	  if(password.value != confirm_password.value) {
+		confirm_password.setCustomValidity("Passwords Don't Match");
+	  } else {
+		confirm_password.setCustomValidity('');
+	  }
+	};
+
+	password.onchange = validatePassword;
+	confirm_password.onkeyup = validatePassword;
+	
+	var email = document.getElementById("email");
+	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	
+	function validateEmail(){
+		if(re.test(email.value)) {
+			email.setCustomValidity('');
+		} else {
+			email.setCustomValidity('Email not valid');
+		}
+	};
+	email.onkeyup = validateEmail;
+	
+	var strength = {
+		0: "Worst",
+		1: "Bad",
+		2: "Weak",
+		3: "Good",
+		4: "Strong"
+	}
+
+	var password = document.getElementById('password');
+	var text = document.getElementById('password-strength-text');
+
+	password.addEventListener('input', function()
+	{
+		var val = password.value;
+		var result = zxcvbn(val);
+	   
+		// Update the text indictor
+		if(val !== "") {
+			if (strength[result.score]=="Worst") {
+				text.innerHTML = "<div style='background-color: rgba(0, 0, 0, 0.1); height:5px; margin-bottom: 6px;'></div>"
+				text.innerHTML += "Strength: " + "<strong style='color: red;'>" + strength[result.score] + "</strong>"; 
+			};
+			if (strength[result.score]=="Bad") {
+				text.innerHTML = "<div style='background-color: rgba(0, 0, 0, 0.1); height:5px; margin-bottom: 6px;'></div>"
+				text.innerHTML += "Strength: " + "<strong style='color: #ccc50e;'>" + strength[result.score] + "</strong>"; 
+			};
+			if (strength[result.score]=="Weak") {
+				text.innerHTML = "<div style='background-color: rgba(0, 0, 0, 0.1); height:5px; margin-bottom: 6px;'></div>"
+				text.innerHTML += "Strength: " + "<strong style='color: orange;'>" + strength[result.score] + "</strong>"; 
+			};
+			if (strength[result.score]=="Good") {
+				text.innerHTML = "<div style='background-color: rgba(0, 0, 0, 0.1); height:5px; margin-bottom: 6px;'></div>"
+				text.innerHTML += "Strength: " + "<strong style='color: green;'>" + strength[result.score] + "</strong>"; 
+			};
+			if (strength[result.score]=="Strong") {
+				text.innerHTML = "<div style='background-color: rgba(0, 0, 0, 0.1); height:5px; margin-bottom: 6px;'></div>"
+				text.innerHTML += "Strength: " + "<strong style='color: green;'> " + strength[result.score] + "</strong>"; 
+			};
+		}
+		else {
+			text.innerHTML = "";
+		}
+	});
+</script>
+</body>
+</html>

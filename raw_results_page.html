@@ -1,0 +1,54 @@
+<!--
+{% if cve_list|length!=0 %}
+	<div class="container slideInUp animated">
+		Records Found: {{cve_list|length}}
+	</div>
+
+<div class="ui divided items container animated bounceInUp ">
+	{% for value in cve_list %}
+		<div class="item" style="word-wrap:break-word; min-width: 70%;">
+			<div class="content">
+				<p class="header">{{ value['cve'] }} <a href="{{ url_for('cve_details', cve_id=value['id'])}}"><i class="right Info Circle icon"></i></a></p>
+				{% if 'cvssv2_score' in value %}
+					<div class="meta">
+						{% if value['cvssv2_severity'].lower()=='low' %}
+							<span>CVSSV2 score: <span class="badge badge-primary">{{ value['cvssv2_score'] }} {{ value['cvssv2_severity'] }}</span></span>
+						{% elif value['cvssv2_severity'].lower()=='medium' %}
+							<span>CVSSV2 score: <span class="badge badge-warning">{{ value['cvssv2_score'] }} {{ value['cvssv2_severity'] }}</span></span>
+						{% elif value['cvssv2_severity'].lower()=='high' %}
+							<span>CVSSV2 score: <span class="badge badge-danger">{{ value['cvssv2_score'] }} {{ value['cvssv2_severity'] }}</span></span>
+						{% elif value['cvssv2_severity'].lower()=='critical' %}
+							<span>CVSSV2 score: <span class="badge badge-default">{{ value['cvssv2_score'] }} {{ value['cvssv2_severity'] }}</span></span>
+						{% endif %}
+						{% if 'cvssv3_score' in value %}
+							{% if value['cvssv3_severity'].lower()=='low' %}
+								<span>&nbsp; CVSSV3 score: <span class="badge badge-primary">{{ value['cvssv3_score'] }} {{ value['cvssv3_severity'] }}</span></span>
+							{% elif value['cvssv3_severity'].lower()=='medium' %}
+								<span>&nbsp; CVSSV3 score: <span class="badge badge-warning">{{ value['cvssv3_score'] }} {{ value['cvssv3_severity'] }}</span></span>
+							{% elif value['cvssv3_severity'].lower()=='high' %}
+								<span>&nbsp; CVSSV3 score: <span class="badge badge-danger">{{ value['cvssv3_score'] }} {{ value['cvssv3_severity'] }}</span></span>
+							{% elif value['cvssv3_severity'].lower()=='critical' %}
+								<span>&nbsp; CVSSV3 score: <span class="badge badge-default">{{ value['cvssv3_score'] }} {{ value['cvssv3_severity'] }}</span></span>
+							{% endif %}
+						{% endif %}
+					</div>
+				{% endif %}
+				<div class="description">
+					<p>{{ value['desc'] }}</p>
+				</div>
+				{% if 'upload' in value %}
+					<div class="extra">
+						<div class="ui label">Original release date: {{ value['upload'] }}</div>
+						{% if 'edited' in value %}
+							<div class="ui label">Last Modified: {{ value['edited'] }}</div>
+						{% endif %}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	{% endfor %}
+</div>
+{% else %}
+	<div class="container slideInUp animated">No records found</div>
+{% endif %}
+-->

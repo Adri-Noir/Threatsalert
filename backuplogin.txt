@@ -1,0 +1,97 @@
+<div class="container animated zoomIn">
+  <div class="row main">
+    <div class="panel-heading col-md-12">
+		<div class="main-center main-login" style="background-color:#0275d8; color:white; font-size:25; font-family:Verdana;">
+			<p class="text-center">Recover your password</p>
+		</div>
+	</div>
+    <div class="main-login main-center">
+      <form class="form-horizontal" method="POST" action="/recover_password">
+		<div class="form-group">
+          <label for="username" class="cols-sm-2 control-label">Your Email</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-id-card fa" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="email" id="email" placeholder="Enter your Email" />
+            </div>
+          </div>
+        </div>
+		<div class="form-group">
+          <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Recover your password</button>
+        </div>
+        <div class="login-register">
+          <a href="/login">Login</a>
+        </div>
+		<div class="login-register">
+			<a href="/register">Register</a>
+		</div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+/*
+ * General styles
+ */
+
+body,
+html {
+  height: 100%;
+  background-repeat: no-repeat;
+  background-color: #d3d3d3;
+}
+
+.main {
+  margin-top: 70px;
+}
+
+h1.title {
+  font-size: 50px;
+  font-weight: 400;
+}
+
+hr {
+  width: 10%;
+  color: #fff;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  margin-bottom: 15px;
+}
+
+input,
+input::-webkit-input-placeholder {
+  font-size: 11px;
+  padding-top: 3px;
+}
+
+.main-login {
+  background-color: #fff;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.main-center {
+  margin-top: 30px;
+  margin: 0 auto;
+  max-width: 330px;
+  padding: 40px 40px;
+}
+
+.login-button {
+  margin-top: 5px;
+}
+
+.login-register {
+  font-size: 11px;
+  text-align: center;
+}
